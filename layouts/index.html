@@ -1,0 +1,72 @@
+{{ define "main" }}
+{{- $photos := slice -}}
+{{- $photoFiles := readDir "static/photos" -}}
+{{- range $photoFiles -}}
+  {{- if or (strings.HasSuffix .Name ".jpg") (strings.HasSuffix .Name ".jpeg") (strings.HasSuffix .Name ".png") (strings.HasSuffix .Name ".webp") -}}
+    {{- $baseName := replaceRE "\\.(jpg|jpeg|png|webp)$" "" .Name -}}
+    {{- $yamlPath := printf "static/photos/%s.yaml" $baseName -}}
+    {{- $meta := dict "caption" $baseName "date" "" "location" "" "tags" slice -}}
+    {{- if fileExists $yamlPath -}}
+      {{- $meta = readFile $yamlPath | transform.Unmarshal -}}
+    {{- end -}}
+    {{- $photo := dict "file" .Name "src" (printf "/photos/%s" .Name) "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
+    {{- $photos = $photos | append $photo -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $sortedPhotos := sort $photos "date" "desc" -}}
+
+{{/* Collect all unique tags */}}
+{{- $allTags := slice -}}
+{{- range $sortedPhotos -}}
+  {{- range .tags -}}
+    {{- if not (in $allTags .) -}}
+      {{- $allTags = $allTags | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $allTags = sort $allTags -}}
+
+{{/* Tag Filter Bar */}}
+{{ if gt (len $allTags) 0 }}
+<div class="tag-filters">
+  {{- range $allTags }}
+  <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+  {{- end }}
+</div>
+{{ end }}
+
+{{/* Photo Grid */}}
+<div class="photo-grid">
+  {{- range $sortedPhotos }}
+  <div class="photo-card" data-tags="{{ delimit .tags "," }}" data-src="{{ .src }}" data-caption="{{ .caption }}" data-date="{{ .date }}" data-location="{{ .location }}">
+    <img src="{{ .src }}" alt="{{ .caption }}" loading="lazy">
+    <div class="caption">{{ .caption }}</div>
+    <div class="meta">
+      {{- if .date }}{{ .date }}{{ end }}
+      {{- if and .date .location }} · {{ end }}
+      {{- if .location }}{{ .location }}{{ end }}
+    </div>
+    {{ if .tags }}
+    <div class="tags">
+      {{- range .tags }}
+      <span class="tag">{{ . }}</span>
+      {{- end }}
+    </div>
+    {{ end }}
+  </div>
+  {{- end }}
+</div>
+
+{{/* Lightbox */}}
+<div class="lightbox" id="lightbox">
+  <button class="close" aria-label="Close">&times;</button>
+  <button class="nav prev" aria-label="Previous">&lsaquo;</button>
+  <button class="nav next" aria-label="Next">&rsaquo;</button>
+  <img src="" alt="">
+  <div class="lightbox-caption">
+    <div class="caption"></div>
+    <div class="meta"></div>
+  </div>
+</div>
+{{ end }}
