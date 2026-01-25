@@ -1,0 +1,192 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+header h1 {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+/* Tag Filter Bar */
+.tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tag-filter {
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tag-filter:hover {
+  background: #e0e0e0;
+}
+
+.tag-filter.active {
+  background: #333;
+  color: #fff;
+}
+
+/* Photo Grid */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Photo Card */
+.photo-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.photo-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.photo-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.photo-card .caption {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.photo-card .meta {
+  font-size: 14px;
+  color: #666666;
+  margin-top: 4px;
+}
+
+.photo-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.photo-card .tag {
+  background: #f0f0f0;
+  color: #333;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.lightbox .lightbox-caption {
+  color: #fff;
+  text-align: center;
+  margin-top: 16px;
+  padding: 0 16px;
+}
+
+.lightbox .lightbox-caption .caption {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.lightbox .lightbox-caption .meta {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.lightbox .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.lightbox .nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 48px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 20px;
+}
+
+.lightbox .nav.prev {
+  left: 10px;
+}
+
+.lightbox .nav.next {
+  right: 10px;
+}
+
+.lightbox .nav:hover {
+  color: #ccc;
+}
