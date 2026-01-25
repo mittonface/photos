@@ -1,4 +1,15 @@
 (function() {
+  // Collapsible tag categories
+  const tagGroupLabels = document.querySelectorAll('.tag-group-label');
+  tagGroupLabels.forEach(label => {
+    label.addEventListener('click', () => {
+      const tags = label.nextElementSibling;
+      const isExpanded = label.getAttribute('aria-expanded') === 'true';
+      label.setAttribute('aria-expanded', !isExpanded);
+      tags.classList.toggle('collapsed');
+    });
+  });
+
   // Initialize masonry layout
   const macyInstance = Macy({
     container: '.photo-grid',

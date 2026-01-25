@@ -1,0 +1,101 @@
+categories:
+  - name: Places
+    tags:
+      - japan
+      - kyoto
+      - tokyo
+      - osaka
+      - nara
+      - fushimi-inari
+      - dotonbori
+      - shibuya
+      - shinjuku
+      - ginza
+      - higashiyama
+      - parc-omega
+      - meiji-shrine
+      - heian-shrine
+      - yasaka-pagoda
+
+  - name: Wildlife
+    tags:
+      - wildlife
+      - birds
+      - canada-goose
+      - great-blue-heron
+      - wood-duck
+      - mallard
+      - hooded-merganser
+      - songbird
+      - veery
+      - tern
+      - yellowlegs
+      - shorebirds
+      - song-sparrow
+      - eastern-phoebe
+      - black-capped-chickadee
+      - deer
+      - fox
+      - wolf
+      - cat
+      - dog
+      - chipmunk
+      - frog
+      - newt
+      - goslings
+      - ducklings
+      - pups
+      - family
+      - animal
+
+  - name: Themes
+    tags:
+      - travel
+      - nature
+      - landscape
+      - urban
+      - street
+      - portrait
+      - cityscape
+      - minimalist
+      - action
+      - candid
+      - aerial
+      - street-photography
+
+  - name: Culture
+    tags:
+      - shrine
+      - torii
+      - temple
+      - cherry-blossoms
+      - hanami
+      - bamboo
+      - tanuki
+      - kitsune
+      - komainu
+      - sake
+      - kawaii
+      - inari
+      - benzaiten
+      - traditional
+      - pagoda
+      - statue
+      - godzilla
+      - kumamon
+      - mofusand
+
+  - name: Mood
+    tags:
+      - spring
+      - winter
+      - night
+      - sunrise
+      - golden-hour
+      - snow
+      - water
+      - blossoms
+      - leaves
+      - silhouette
+      - neon
+      - crowds

@@ -27,11 +27,48 @@
 {{- end -}}
 {{- $allTags = sort $allTags -}}
 
-{{/* Tag Filter Bar */}}
+{{/* Tag Filter Bar - Grouped by Category */}}
 {{ if gt (len $allTags) 0 }}
 <div class="tag-filters">
+  {{- $categories := site.Data.tagcategories.categories -}}
+  {{- $usedTags := slice -}}
+  {{- range $categories }}
+    {{- $categoryTags := slice -}}
+    {{- range .tags }}
+      {{- if in $allTags . }}
+        {{- $categoryTags = $categoryTags | append . }}
+        {{- $usedTags = $usedTags | append . }}
+      {{- end }}
+    {{- end }}
+    {{- $categoryTags = sort $categoryTags -}}
+    {{- if gt (len $categoryTags) 0 }}
+  <div class="tag-group">
+    <button class="tag-group-label" aria-expanded="false">{{ .name }}</button>
+    <div class="tag-group-tags collapsed">
+      {{- range $categoryTags }}
+      <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+      {{- end }}
+    </div>
+  </div>
+    {{- end }}
+  {{- end }}
+  {{/* Show uncategorized tags if any */}}
+  {{- $uncategorized := slice -}}
   {{- range $allTags }}
-  <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+    {{- if not (in $usedTags .) }}
+      {{- $uncategorized = $uncategorized | append . }}
+    {{- end }}
+  {{- end }}
+  {{- $uncategorized = sort $uncategorized -}}
+  {{- if gt (len $uncategorized) 0 }}
+  <div class="tag-group">
+    <button class="tag-group-label" aria-expanded="false">Other</button>
+    <div class="tag-group-tags collapsed">
+      {{- range $uncategorized }}
+      <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+      {{- end }}
+    </div>
+  </div>
   {{- end }}
 </div>
 {{ end }}
