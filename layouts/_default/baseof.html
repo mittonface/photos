@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Site.Title }}</title>
+  {{ $style := resources.Get "css/main.css" | minify }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>{{ .Site.Title }}</h1>
+    </header>
+    <main>
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+  {{ $js := resources.Get "js/main.js" | minify }}
+  <script src="{{ $js.Permalink }}"></script>
+</body>
+</html>
