@@ -1,59 +1,32 @@
 # Photos
 
-A Hugo-based photo gallery site deployed to photos.mittn.ca.
+Personal photo blog at [photos.mittn.ca](https://photos.mittn.ca)
 
-## Prerequisites
+## Adding Photos
 
-### Install Hugo
+1. Add your image to `static/photos/` (jpg, jpeg, png, or webp)
+2. Create a matching `.yaml` file with metadata:
 
-**macOS (Homebrew):**
-```bash
-brew install hugo
+```yaml
+caption: "Photo description"
+date: "2025-01-25"
+location: "City, Country"
+tags:
+  - tag1
+  - tag2
 ```
 
-**Windows (Chocolatey):**
-```bash
-choco install hugo-extended
-```
+3. Commit and push to `main` - site auto-deploys
 
-**Linux (Snap):**
-```bash
-snap install hugo
-```
-
-For other installation methods, see the [Hugo installation docs](https://gohugo.io/installation/).
-
-## Development
-
-### Run locally
-
-Start the development server with live reload:
+## Local Development
 
 ```bash
-hugo server -D
+hugo serve
 ```
 
-The site will be available at http://localhost:1313/
+Site available at http://localhost:1313
 
-### Build for production
+## Setup
 
-Generate the static site:
-
-```bash
-hugo
-```
-
-Output will be in the `public/` directory.
-
-## Project Structure
-
-```
-.
-├── config.toml          # Hugo configuration
-├── content/             # Markdown content files
-│   └── _index.md        # Homepage content
-├── layouts/             # HTML templates (coming soon)
-├── static/              # Static assets (images, CNAME, etc.)
-│   └── CNAME            # Custom domain for GitHub Pages
-└── public/              # Generated site (git-ignored)
-```
+1. Enable GitHub Pages in repo settings (source: GitHub Actions)
+2. Configure DNS: CNAME record `photos.mittn.ca` → `<username>.github.io`
