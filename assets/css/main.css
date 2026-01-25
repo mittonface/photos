@@ -51,29 +51,16 @@ header h1 {
   color: #fff;
 }
 
-/* Photo Grid */
+/* Photo Grid - Macy.js handles layout and responsive breakpoints */
 .photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-@media (max-width: 900px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .photo-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Macy.js positions children absolutely within this container */
 }
 
 /* Photo Card */
 .photo-card {
   cursor: pointer;
   transition: box-shadow 0.2s;
+  margin-bottom: 16px;
 }
 
 .photo-card:hover {

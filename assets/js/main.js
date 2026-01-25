@@ -1,4 +1,26 @@
 (function() {
+  // Initialize masonry layout
+  const macyInstance = Macy({
+    container: '.photo-grid',
+    trueOrder: true,
+    margin: 16,
+    columns: 3,
+    breakAt: {
+      900: 2,
+      600: 1
+    }
+  });
+
+  // Recalculate layout after images load (important for lazy loading)
+  const images = document.querySelectorAll('.photo-card img');
+  images.forEach(img => {
+    if (img.complete) {
+      macyInstance.recalculate(true);
+    } else {
+      img.addEventListener('load', () => macyInstance.recalculate(true));
+    }
+  });
+
   // Tag filtering
   const tagButtons = document.querySelectorAll('.tag-filter');
   const photoCards = document.querySelectorAll('.photo-card');
@@ -28,6 +50,9 @@
           }
         });
       }
+
+      // Recalculate masonry layout after filtering
+      macyInstance.recalculate(true, true);
     });
   });
 
