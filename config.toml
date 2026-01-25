@@ -1,0 +1,8 @@
+baseURL = "https://photos.mittn.ca/"
+languageCode = "en-us"
+title = "Photos"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
