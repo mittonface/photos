@@ -2,15 +2,28 @@
 {{- $photos := slice -}}
 {{- $photoFiles := readDir "static/photos" -}}
 {{- range $photoFiles -}}
-  {{- if or (strings.HasSuffix .Name ".jpg") (strings.HasSuffix .Name ".jpeg") (strings.HasSuffix .Name ".png") (strings.HasSuffix .Name ".webp") -}}
-    {{- $baseName := replaceRE "\\.(jpg|jpeg|png|webp)$" "" .Name -}}
-    {{- $yamlPath := printf "static/photos/%s.yaml" $baseName -}}
-    {{- $meta := dict "caption" $baseName "date" "" "location" "" "tags" slice -}}
-    {{- if fileExists $yamlPath -}}
-      {{- $meta = readFile $yamlPath | transform.Unmarshal -}}
+  {{- if strings.HasSuffix .Name ".yaml" -}}
+    {{- $baseName := replaceRE "\\.yaml$" "" .Name -}}
+    {{- $yamlPath := printf "static/photos/%s" .Name -}}
+    {{- $meta := readFile $yamlPath | transform.Unmarshal -}}
+    {{/* Use url from YAML if present, otherwise fall back to local path */}}
+    {{- $src := "" -}}
+    {{- if $meta.url -}}
+      {{- $src = $meta.url -}}
+    {{- else -}}
+      {{/* Try to find local image file */}}
+      {{- $extensions := slice ".jpg" ".jpeg" ".png" ".webp" -}}
+      {{- range $extensions -}}
+        {{- $imgPath := printf "static/photos/%s%s" $baseName . -}}
+        {{- if fileExists $imgPath -}}
+          {{- $src = printf "/photos/%s%s" $baseName . -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
-    {{- $photo := dict "file" .Name "src" (printf "/photos/%s" .Name) "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
-    {{- $photos = $photos | append $photo -}}
+    {{- if $src -}}
+      {{- $photo := dict "file" .Name "src" $src "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
+      {{- $photos = $photos | append $photo -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 

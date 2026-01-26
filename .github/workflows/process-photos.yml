@@ -1,0 +1,91 @@
+name: Process Staging Photos
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'staging/**'
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Process staging photos
+        run: |
+          cd staging
+
+          PHOTO_COUNT=0
+
+          for img in *.jpg *.jpeg *.png *.webp 2>/dev/null; do
+            [ -f "$img" ] || continue
+
+            # Check if file already exists in S3 (prevent overwrites)
+            if aws s3 ls "s3://bm-new-photo-blog/$img" 2>/dev/null; then
+              echo "ERROR: $img already exists in S3. Skipping to prevent overwrite."
+              exit 1
+            fi
+
+            # Upload to S3
+            echo "Uploading $img to S3..."
+            aws s3 cp "$img" "s3://bm-new-photo-blog/$img"
+
+            # Get base name without extension
+            base="${img%.*}"
+            yaml_file="${base}.yaml"
+
+            # Generate YAML if it doesn't exist
+            if [ ! -f "$yaml_file" ]; then
+              echo "WARNING: No YAML for $img, generating minimal metadata"
+              cat > "$yaml_file" << EOF
+          caption: "$base"
+          date: "$(date +%Y-%m-%d)"
+          location: ""
+          tags: []
+          EOF
+            fi
+
+            # Add url field to YAML
+            echo "url: \"https://photo-cdn.mittn.ca/$img\"" >> "$yaml_file"
+
+            # Move YAML to static/photos/
+            mv "$yaml_file" "../static/photos/"
+
+            # Delete the image from staging
+            rm "$img"
+
+            PHOTO_COUNT=$((PHOTO_COUNT + 1))
+          done
+
+          # Check for orphaned YAML files (YAML without image)
+          for yaml in *.yaml 2>/dev/null; do
+            [ -f "$yaml" ] || continue
+            echo "WARNING: $yaml has no matching image file, skipping"
+          done
+
+          echo "Processed $PHOTO_COUNT photo(s)"
+          echo "PHOTO_COUNT=$PHOTO_COUNT" >> $GITHUB_ENV
+
+      - name: Commit and push changes
+        if: env.PHOTO_COUNT != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Process ${{ env.PHOTO_COUNT }} new photo(s)"
+          git push
