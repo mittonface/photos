@@ -57,9 +57,9 @@ jobs:
 
             # Upload original and thumbnail to S3
             echo "Uploading $img to S3..."
-            aws s3 cp "$img" "s3://bm-new-photo-blog/$img"
+            aws s3 cp "$img" "s3://bm-new-photo-blog/$img" --cache-control "public, max-age=31536000, immutable"
             echo "Uploading $thumb_file to S3..."
-            aws s3 cp "$thumb_file" "s3://bm-new-photo-blog/$thumb_file"
+            aws s3 cp "$thumb_file" "s3://bm-new-photo-blog/$thumb_file" --cache-control "public, max-age=31536000, immutable"
 
             # Generate YAML if it doesn't exist
             if [ ! -f "$yaml_file" ]; then
