@@ -91,7 +91,7 @@
 <div class="photo-grid">
   {{- range $sortedPhotos }}
   <div class="photo-card" data-tags="{{ delimit .tags "," }}" data-src="{{ .src }}" data-caption="{{ .caption }}" data-date="{{ .date }}" data-location="{{ .location }}">
-    <img src="{{ .thumbnail }}" alt="{{ .caption }}" loading="lazy">
+    <img src="{{ .thumbnail }}" alt="{{ .caption }}" loading="lazy" decoding="async">
     <div class="caption">{{ .caption }}</div>
     <div class="meta">
       {{- if .date }}{{ .date }}{{ end }}
