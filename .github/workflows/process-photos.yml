@@ -26,6 +26,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
       - name: Process staging photos
         run: |
           cd staging
@@ -43,13 +46,20 @@ jobs:
               continue
             fi
 
-            # Upload to S3
-            echo "Uploading $img to S3..."
-            aws s3 cp "$img" "s3://bm-new-photo-blog/$img"
-
             # Get base name without extension
             base="${img%.*}"
             yaml_file="${base}.yaml"
+
+            # Generate thumbnail (600px wide, WebP format)
+            thumb_file="${base}-thumb.webp"
+            echo "Generating thumbnail $thumb_file..."
+            convert "$img" -resize 600x -quality 80 "$thumb_file"
+
+            # Upload original and thumbnail to S3
+            echo "Uploading $img to S3..."
+            aws s3 cp "$img" "s3://bm-new-photo-blog/$img"
+            echo "Uploading $thumb_file to S3..."
+            aws s3 cp "$thumb_file" "s3://bm-new-photo-blog/$thumb_file"
 
             # Generate YAML if it doesn't exist
             if [ ! -f "$yaml_file" ]; then
@@ -62,14 +72,16 @@ jobs:
           EOF
             fi
 
-            # Add url field to YAML
+            # Add url and thumbnail_url fields to YAML
             echo "url: \"https://photo-cdn.mittn.ca/$img\"" >> "$yaml_file"
+            echo "thumbnail_url: \"https://photo-cdn.mittn.ca/$thumb_file\"" >> "$yaml_file"
 
             # Move YAML to static/photos/
             mv "$yaml_file" "../static/photos/"
 
-            # Delete the image from staging
+            # Delete the image and thumbnail from staging
             rm "$img"
+            rm "$thumb_file"
 
             PHOTO_COUNT=$((PHOTO_COUNT + 1))
           done

@@ -21,7 +21,8 @@
       {{- end -}}
     {{- end -}}
     {{- if $src -}}
-      {{- $photo := dict "file" .Name "src" $src "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
+      {{- $thumbnail := default $src $meta.thumbnail_url -}}
+      {{- $photo := dict "file" .Name "src" $src "thumbnail" $thumbnail "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
       {{- $photos = $photos | append $photo -}}
     {{- end -}}
   {{- end -}}
@@ -90,7 +91,7 @@
 <div class="photo-grid">
   {{- range $sortedPhotos }}
   <div class="photo-card" data-tags="{{ delimit .tags "," }}" data-src="{{ .src }}" data-caption="{{ .caption }}" data-date="{{ .date }}" data-location="{{ .location }}">
-    <img src="{{ .src }}" alt="{{ .caption }}" loading="lazy">
+    <img src="{{ .thumbnail }}" alt="{{ .caption }}" loading="lazy">
     <div class="caption">{{ .caption }}</div>
     <div class="meta">
       {{- if .date }}{{ .date }}{{ end }}
