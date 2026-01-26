@@ -89,18 +89,18 @@
 
 {{/* Photo Grid */}}
 <div class="photo-grid">
-  {{- range $sortedPhotos }}
-  <div class="photo-card" data-tags="{{ delimit .tags "," }}" data-src="{{ .src }}" data-caption="{{ .caption }}" data-date="{{ .date }}" data-location="{{ .location }}">
-    <img src="{{ .thumbnail }}" alt="{{ .caption }}" loading="lazy" decoding="async">
-    <div class="caption">{{ .caption }}</div>
+  {{- range $index, $photo := $sortedPhotos }}
+  <div class="photo-card" data-tags="{{ delimit $photo.tags "," }}" data-src="{{ $photo.src }}" data-caption="{{ $photo.caption }}" data-date="{{ $photo.date }}" data-location="{{ $photo.location }}">
+    <img src="{{ $photo.thumbnail }}" alt="{{ $photo.caption }}" {{ if gt $index 5 }}loading="lazy" {{ end }}decoding="async">
+    <div class="caption">{{ $photo.caption }}</div>
     <div class="meta">
-      {{- if .date }}{{ .date }}{{ end }}
-      {{- if and .date .location }} · {{ end }}
-      {{- if .location }}{{ .location }}{{ end }}
+      {{- if $photo.date }}{{ $photo.date }}{{ end }}
+      {{- if and $photo.date $photo.location }} · {{ end }}
+      {{- if $photo.location }}{{ $photo.location }}{{ end }}
     </div>
-    {{ if .tags }}
+    {{ if $photo.tags }}
     <div class="tags">
-      {{- range .tags }}
+      {{- range $photo.tags }}
       <span class="tag">{{ . }}</span>
       {{- end }}
     </div>
