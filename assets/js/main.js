@@ -1,4 +1,4 @@
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   // Collapsible tag categories
   const tagGroupLabels = document.querySelectorAll('.tag-group-label');
   tagGroupLabels.forEach(label => {
@@ -138,4 +138,4 @@
     if (e.key === 'ArrowLeft') showPhoto(currentIndex - 1);
     if (e.key === 'ArrowRight') showPhoto(currentIndex + 1);
   });
-})();
+});

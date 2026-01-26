@@ -17,8 +17,9 @@
       {{ block "main" . }}{{ end }}
     </main>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/macy@2/dist/macy.min.js"></script>
+  {{ $macy := resources.Get "js/macy.min.js" }}
+  <script defer src="{{ $macy.Permalink }}"></script>
   {{ $js := resources.Get "js/main.js" | minify }}
-  <script src="{{ $js.Permalink }}"></script>
+  <script defer src="{{ $js.Permalink }}"></script>
 </body>
 </html>
