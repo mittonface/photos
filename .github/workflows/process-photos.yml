@@ -39,8 +39,8 @@ jobs:
           for img in "${IMAGE_FILES[@]}"; do
             # Check if file already exists in S3 (prevent overwrites)
             if aws s3 ls "s3://bm-new-photo-blog/$img" 2>/dev/null; then
-              echo "ERROR: $img already exists in S3. Skipping to prevent overwrite."
-              exit 1
+              echo "WARNING: $img already exists in S3. Skipping to prevent overwrite (keeping in staging)."
+              continue
             fi
 
             # Upload to S3
