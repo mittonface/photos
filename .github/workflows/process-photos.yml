@@ -30,11 +30,13 @@ jobs:
         run: |
           cd staging
 
+          shopt -s nullglob
+          IMAGE_FILES=(*.jpg *.jpeg *.png *.webp)
+          shopt -u nullglob
+
           PHOTO_COUNT=0
 
-          for img in *.jpg *.jpeg *.png *.webp 2>/dev/null; do
-            [ -f "$img" ] || continue
-
+          for img in "${IMAGE_FILES[@]}"; do
             # Check if file already exists in S3 (prevent overwrites)
             if aws s3 ls "s3://bm-new-photo-blog/$img" 2>/dev/null; then
               echo "ERROR: $img already exists in S3. Skipping to prevent overwrite."
@@ -73,8 +75,11 @@ jobs:
           done
 
           # Check for orphaned YAML files (YAML without image)
-          for yaml in *.yaml 2>/dev/null; do
-            [ -f "$yaml" ] || continue
+          shopt -s nullglob
+          YAML_FILES=(*.yaml)
+          shopt -u nullglob
+
+          for yaml in "${YAML_FILES[@]}"; do
             echo "WARNING: $yaml has no matching image file, skipping"
           done
 
