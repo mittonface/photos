@@ -9,3 +9,7 @@ tags:
   - parc-omega
 url: "https://photo-cdn.mittn.ca/wolf-mother-with-pups.jpg"
 thumbnail_url: "https://photo-cdn.mittn.ca/wolf-mother-with-pups-thumb.webp"
+width: 6000
+height: 4000
+thumbnail_width: 600
+thumbnail_height: 400

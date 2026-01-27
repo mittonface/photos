@@ -55,6 +55,13 @@ jobs:
             echo "Generating thumbnail $thumb_file..."
             convert "$img" -resize 600x -quality 80 "$thumb_file"
 
+            # Extract image dimensions for CLS prevention
+            width=$(identify -format "%w" "$img")
+            height=$(identify -format "%h" "$img")
+            thumb_width=$(identify -format "%w" "$thumb_file")
+            thumb_height=$(identify -format "%h" "$thumb_file")
+            echo "Dimensions: ${width}x${height}, thumbnail: ${thumb_width}x${thumb_height}"
+
             # Upload original and thumbnail to S3
             echo "Uploading $img to S3..."
             aws s3 cp "$img" "s3://bm-new-photo-blog/$img" --cache-control "public, max-age=31536000, immutable"
@@ -72,9 +79,13 @@ jobs:
           EOF
             fi
 
-            # Add url and thumbnail_url fields to YAML
+            # Add url, thumbnail_url, and dimension fields to YAML
             echo "url: \"https://photo-cdn.mittn.ca/$img\"" >> "$yaml_file"
             echo "thumbnail_url: \"https://photo-cdn.mittn.ca/$thumb_file\"" >> "$yaml_file"
+            echo "width: $width" >> "$yaml_file"
+            echo "height: $height" >> "$yaml_file"
+            echo "thumbnail_width: $thumb_width" >> "$yaml_file"
+            echo "thumbnail_height: $thumb_height" >> "$yaml_file"
 
             # Move YAML to static/photos/
             mv "$yaml_file" "../static/photos/"

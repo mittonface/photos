@@ -22,7 +22,7 @@
     {{- end -}}
     {{- if $src -}}
       {{- $thumbnail := default $src $meta.thumbnail_url -}}
-      {{- $photo := dict "file" .Name "src" $src "thumbnail" $thumbnail "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) -}}
+      {{- $photo := dict "file" .Name "src" $src "thumbnail" $thumbnail "caption" (default $baseName $meta.caption) "date" (default "" $meta.date) "location" (default "" $meta.location) "tags" (default slice $meta.tags) "thumbnail_width" (default 0 $meta.thumbnail_width) "thumbnail_height" (default 0 $meta.thumbnail_height) -}}
       {{- $photos = $photos | append $photo -}}
     {{- end -}}
   {{- end -}}
@@ -91,7 +91,7 @@
 <div class="photo-grid">
   {{- range $index, $photo := $sortedPhotos }}
   <div class="photo-card" data-tags="{{ delimit $photo.tags "," }}" data-src="{{ $photo.src }}" data-caption="{{ $photo.caption }}" data-date="{{ $photo.date }}" data-location="{{ $photo.location }}">
-    <img src="{{ $photo.thumbnail }}" alt="{{ $photo.caption }}" {{ if gt $index 5 }}loading="lazy" {{ end }}decoding="async">
+    <img src="{{ $photo.thumbnail }}" alt="{{ $photo.caption }}" {{ if and $photo.thumbnail_width $photo.thumbnail_height }}style="aspect-ratio: {{ $photo.thumbnail_width }}/{{ $photo.thumbnail_height }}" {{ end }}{{ if gt $index 5 }}loading="lazy" {{ end }}decoding="async">
     <div class="caption">{{ $photo.caption }}</div>
     <div class="meta">
       {{- if $photo.date }}{{ $photo.date }}{{ end }}

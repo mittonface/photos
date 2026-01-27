@@ -8,3 +8,7 @@ tags:
   - spring
 url: "https://photo-cdn.mittn.ca/gray-catbird-spring.jpg"
 thumbnail_url: "https://photo-cdn.mittn.ca/gray-catbird-spring-thumb.webp"
+width: 6000
+height: 4000
+thumbnail_width: 600
+thumbnail_height: 400

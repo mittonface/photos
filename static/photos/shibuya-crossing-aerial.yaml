@@ -12,3 +12,7 @@ tags:
   - travel
 url: "https://photo-cdn.mittn.ca/shibuya-crossing-aerial.jpg"
 thumbnail_url: "https://photo-cdn.mittn.ca/shibuya-crossing-aerial-thumb.webp"
+width: 6000
+height: 4000
+thumbnail_width: 600
+thumbnail_height: 400

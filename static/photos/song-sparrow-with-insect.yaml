@@ -9,3 +9,7 @@ tags:
   - songbird
 url: "https://photo-cdn.mittn.ca/song-sparrow-with-insect.jpg"
 thumbnail_url: "https://photo-cdn.mittn.ca/song-sparrow-with-insect-thumb.webp"
+width: 6000
+height: 4000
+thumbnail_width: 600
+thumbnail_height: 400

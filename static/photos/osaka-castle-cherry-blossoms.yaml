@@ -9,3 +9,7 @@ tags:
   - landmark
 url: "https://photo-cdn.mittn.ca/osaka-castle-cherry-blossoms.jpg"
 thumbnail_url: "https://photo-cdn.mittn.ca/osaka-castle-cherry-blossoms-thumb.webp"
+width: 4000
+height: 6000
+thumbnail_width: 600
+thumbnail_height: 900
