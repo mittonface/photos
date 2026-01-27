@@ -20,6 +20,13 @@ body {
 header h1 {
   font-size: 24px;
   font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
   margin-bottom: 24px;
 }
 

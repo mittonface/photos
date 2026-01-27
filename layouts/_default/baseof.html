@@ -1,25 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ .Site.Title }}</title>
-  <link rel="preconnect" href="https://photo-cdn.mittn.ca">
-  {{ $style := resources.Get "css/main.css" | minify }}
-  <link rel="stylesheet" href="{{ $style.Permalink }}">
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>{{ .Site.Title }}</h1>
-    </header>
-    <main>
-      {{ block "main" . }}{{ end }}
-    </main>
-  </div>
-  {{ $macy := resources.Get "js/macy.min.js" }}
-  <script defer src="{{ $macy.Permalink }}"></script>
-  {{ $js := resources.Get "js/main.js" | minify }}
-  <script defer src="{{ $js.Permalink }}"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ .Site.Title }}</title>
+    <link rel="preconnect" href="https://photo-cdn.mittn.ca" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {{ $style := resources.Get "css/main.css" | minify }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>{{ .Site.Title }}</h1>
+        <p class="tagline">
+          Not a photographer, just a dude who sometimes take photos
+        </p>
+      </header>
+      <main>{{ block "main" . }}{{ end }}</main>
+    </div>
+    {{ $macy := resources.Get "js/macy.min.js" }}
+    <script defer src="{{ $macy.Permalink }}"></script>
+    {{ $js := resources.Get "js/main.js" | minify }}
+    <script defer src="{{ $js.Permalink }}"></script>
+  </body>
 </html>

@@ -1,6 +1,6 @@
 baseURL = "https://photos.mittn.ca/"
 languageCode = "en-us"
-title = "Photos"
+title = "Photos By Brent"
 
 [markup]
   [markup.goldmark]
