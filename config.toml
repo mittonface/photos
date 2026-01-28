@@ -2,6 +2,11 @@ baseURL = "https://photos.mittn.ca/"
 languageCode = "en-us"
 title = "Photos By Brent"
 
+[params]
+  description = "A personal photo gallery by Brent. Not a photographer, just a dude who sometimes takes photos."
+  author = "Brent"
+  ogImage = "https://photo-cdn.mittn.ca/gosling-stink-eye-thumb.webp"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
