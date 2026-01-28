@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ .Site.Title }}</title>
     <link rel="preconnect" href="https://photo-cdn.mittn.ca" />
+    <link rel="dns-prefetch" href="https://photo-cdn.mittn.ca" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {{ $style := resources.Get "css/main.css" | minify }}
     <link rel="stylesheet" href="{{ $style.Permalink }}" />

@@ -22,13 +22,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Debounced recalculate to batch multiple image loads
+  let recalcTimer = null;
+  function debouncedRecalculate() {
+    if (recalcTimer) return;
+    recalcTimer = setTimeout(() => {
+      macyInstance.recalculate(true);
+      recalcTimer = null;
+    }, 100);
+  }
+
   // Recalculate layout after images load (important for lazy loading)
   const images = document.querySelectorAll('.photo-card img');
   images.forEach(img => {
     if (img.complete) {
-      macyInstance.recalculate(true);
+      debouncedRecalculate();
     } else {
-      img.addEventListener('load', () => macyInstance.recalculate(true));
+      img.addEventListener('load', debouncedRecalculate);
     }
   });
 
