@@ -24,15 +24,40 @@ Photos are hosted on S3 with CloudFront CDN (`photo-cdn.mittn.ca`). Metadata liv
 - Metadata file: `photo-name.yaml` (contains `url` pointing to CDN)
 - Image files are NOT stored in git
 
-The YAML contains `caption`, `date`, `location`, `tags` array, and `url` (CDN link).
+YAML structure (after processing):
+```yaml
+caption: "Description"
+date: "2025-01-25"
+location: "City, Country"
+tags:
+  - tag1
+  - tag2
+url: "https://photo-cdn.mittn.ca/photo-name.jpg"           # added by action
+thumbnail_url: "https://photo-cdn.mittn.ca/photo-name-thumb.webp"  # added by action
+width: 1920          # added by action
+height: 1080         # added by action
+thumbnail_width: 600 # added by action
+thumbnail_height: 338 # added by action
+```
 
 ### Adding New Photos
 
-1. Add photo + YAML to `staging/` folder
-2. Push to `main`
-3. GitHub Action uploads to S3, moves YAML to `static/photos/` with `url` field
+1. Add image to `staging/` folder (`.jpg`, `.jpeg`, `.png`, `.webp`)
+2. Add matching YAML file with same base name (e.g., `photo.jpg` + `photo.yaml`)
+3. Push to `main`
 
-See `staging/README.md` for details.
+The GitHub Action (`.github/workflows/process-photos.yml`) automatically:
+- Uploads original image to S3
+- Generates 600px-wide WebP thumbnail and uploads it
+- Extracts dimensions from both images
+- Appends `url`, `thumbnail_url`, and dimension fields to YAML
+- Moves YAML to `static/photos/`
+- Deletes image from `staging/`
+
+Edge cases:
+- Missing YAML: auto-generates minimal metadata
+- Duplicate filename in S3: skips upload (prevents overwrites)
+- YAML without matching image: skipped with warning
 
 ### Hugo Template Processing
 
