@@ -60,7 +60,7 @@
     <button class="tag-group-label" aria-expanded="false">{{ .name }}</button>
     <div class="tag-group-tags collapsed">
       {{- range $categoryTags }}
-      <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+      <button class="tag-filter" data-tag="{{ . }}" aria-pressed="false">{{ . }}</button>
       {{- end }}
     </div>
   </div>
@@ -79,7 +79,7 @@
     <button class="tag-group-label" aria-expanded="false">Other</button>
     <div class="tag-group-tags collapsed">
       {{- range $uncategorized }}
-      <button class="tag-filter" data-tag="{{ . }}">{{ . }}</button>
+      <button class="tag-filter" data-tag="{{ . }}" aria-pressed="false">{{ . }}</button>
       {{- end }}
     </div>
   </div>
@@ -90,7 +90,7 @@
 {{/* Photo Grid */}}
 <div class="photo-grid">
   {{- range $index, $photo := $sortedPhotos }}
-  <div class="photo-card" data-tags="{{ delimit $photo.tags "," }}" data-src="{{ $photo.src }}" data-caption="{{ $photo.caption }}" data-date="{{ $photo.date }}" data-location="{{ $photo.location }}">
+  <div class="photo-card" role="button" tabindex="0" aria-label="View photo: {{ $photo.caption }}" data-tags="{{ delimit $photo.tags "," }}" data-src="{{ $photo.src }}" data-caption="{{ $photo.caption }}" data-date="{{ $photo.date }}" data-location="{{ $photo.location }}">
     <img src="{{ $photo.thumbnail }}" alt="{{ $photo.caption }}" {{ if and $photo.thumbnail_width $photo.thumbnail_height }}style="aspect-ratio: {{ $photo.thumbnail_width }}/{{ $photo.thumbnail_height }}" {{ end }}{{ if gt $index 5 }}loading="lazy" {{ end }}decoding="async">
     <div class="caption">{{ $photo.caption }}</div>
     <div class="meta">
@@ -110,10 +110,11 @@
 </div>
 
 {{/* Lightbox */}}
-<div class="lightbox" id="lightbox">
-  <button class="close" aria-label="Close">&times;</button>
-  <button class="nav prev" aria-label="Previous">&lsaquo;</button>
-  <button class="nav next" aria-label="Next">&rsaquo;</button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
+  <div class="sr-only" aria-live="polite" id="lightbox-announce"></div>
+  <button class="close" aria-label="Close lightbox" tabindex="-1">&times;</button>
+  <button class="nav prev" aria-label="Previous photo" tabindex="-1">&lsaquo;</button>
+  <button class="nav next" aria-label="Next photo" tabindex="-1">&rsaquo;</button>
   <img src="" alt="">
   <div class="lightbox-caption">
     <div class="caption"></div>
