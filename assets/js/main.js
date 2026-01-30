@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Theme toggle
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  }
+
   // Collapsible tag categories
   const tagGroupLabels = document.querySelectorAll('.tag-group-label');
   tagGroupLabels.forEach(label => {
@@ -46,6 +57,56 @@ document.addEventListener('DOMContentLoaded', function() {
   const tagButtons = document.querySelectorAll('.tag-filter');
   const photoCards = document.querySelectorAll('.photo-card');
   let activeTag = null;
+
+  // Staggered fade-in animation - clear animation after to allow gravity transforms
+  photoCards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.08}s`;
+    card.addEventListener('animationend', () => {
+      card.style.animation = 'none';
+      card.style.opacity = '1';
+    }, { once: true });
+  });
+
+  // Cursor gravity - photos tilt toward mouse like curious creatures
+  let mouseX = 0, mouseY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function applyGravity() {
+    photoCards.forEach(card => {
+      if (card.style.display === 'none') return;
+      const rect = card.getBoundingClientRect();
+      const cardCenterX = rect.left + rect.width / 2;
+      const cardCenterY = rect.top + rect.height / 2;
+
+      const deltaX = mouseX - cardCenterX;
+      const deltaY = mouseY - cardCenterY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Only affect cards within 400px of cursor
+      if (distance < 400 && distance > 0) {
+        const strength = Math.max(0, (400 - distance) / 400);
+        const maxTilt = 4;
+
+        const tiltX = (deltaY / distance) * maxTilt * strength;
+        const tiltY = -(deltaX / distance) * maxTilt * strength;
+        const scale = 1 + (strength * 0.02);
+
+        card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${scale})`;
+      } else {
+        card.style.transform = '';
+      }
+    });
+    requestAnimationFrame(applyGravity);
+  }
+
+  // Only run on devices with fine pointer (not touch)
+  if (window.matchMedia('(pointer: fine)').matches) {
+    requestAnimationFrame(applyGravity);
+  }
 
   tagButtons.forEach(button => {
     button.addEventListener('click', () => {
