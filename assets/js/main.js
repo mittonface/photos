@@ -47,6 +47,47 @@ document.addEventListener('DOMContentLoaded', function() {
   const photoCards = document.querySelectorAll('.photo-card');
   let activeTag = null;
 
+  // Cursor gravity - photos tilt toward mouse like curious creatures
+  let mouseX = 0, mouseY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function applyGravity() {
+    photoCards.forEach(card => {
+      if (card.style.display === 'none') return;
+      const rect = card.getBoundingClientRect();
+      const cardCenterX = rect.left + rect.width / 2;
+      const cardCenterY = rect.top + rect.height / 2;
+
+      const deltaX = mouseX - cardCenterX;
+      const deltaY = mouseY - cardCenterY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Only affect cards within 400px of cursor
+      if (distance < 400 && distance > 0) {
+        const strength = Math.max(0, (400 - distance) / 400);
+        const maxTilt = 4;
+
+        const tiltX = (deltaY / distance) * maxTilt * strength;
+        const tiltY = -(deltaX / distance) * maxTilt * strength;
+        const scale = 1 + (strength * 0.02);
+
+        card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${scale})`;
+      } else {
+        card.style.transform = '';
+      }
+    });
+    requestAnimationFrame(applyGravity);
+  }
+
+  // Only run on devices with fine pointer (not touch)
+  if (window.matchMedia('(pointer: fine)').matches) {
+    requestAnimationFrame(applyGravity);
+  }
+
   tagButtons.forEach(button => {
     button.addEventListener('click', () => {
       const tag = button.dataset.tag;

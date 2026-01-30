@@ -117,17 +117,18 @@ header h1 {
 /* Photo Card */
 .photo-card {
   cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: box-shadow 0.2s, transform 0.08s ease-out;
   margin-bottom: 16px;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .photo-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
 }
 
 .photo-card img {
