@@ -47,6 +47,15 @@ document.addEventListener('DOMContentLoaded', function() {
   const photoCards = document.querySelectorAll('.photo-card');
   let activeTag = null;
 
+  // Staggered fade-in animation - clear animation after to allow gravity transforms
+  photoCards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.08}s`;
+    card.addEventListener('animationend', () => {
+      card.style.animation = 'none';
+      card.style.opacity = '1';
+    }, { once: true });
+  });
+
   // Cursor gravity - photos tilt toward mouse like curious creatures
   let mouseX = 0, mouseY = 0;
 
