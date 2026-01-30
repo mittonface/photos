@@ -42,6 +42,7 @@
     </script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to photos</a>
     <div class="container">
       <header>
         <button class="theme-toggle" aria-label="Toggle dark mode">
@@ -54,7 +55,7 @@
           Not a photographer, just a dude who sometimes takes photos
         </p>
       </header>
-      <main>{{ block "main" . }}{{ end }}</main>
+      <main id="main-content">{{ block "main" . }}{{ end }}</main>
     </div>
     {{ $macy := resources.Get "js/macy.min.js" }}
     <script defer src="{{ $macy.Permalink }}"></script>
