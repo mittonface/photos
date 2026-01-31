@@ -56,6 +56,10 @@
         </p>
       </header>
       <main id="main-content">{{ block "main" . }}{{ end }}</main>
+      <footer>
+        <div class="footer-divider"></div>
+        <p>&copy; {{ now.Year }} Brent Mitton. All rights reserved.</p>
+      </footer>
     </div>
     {{ $macy := resources.Get "js/macy.min.js" }}
     <script defer src="{{ $macy.Permalink }}"></script>
